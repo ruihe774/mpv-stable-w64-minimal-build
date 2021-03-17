@@ -1,0 +1,15 @@
+[submodule "mpv"]
+	path = mpv
+	url = https://github.com/mpv-player/mpv.git
+[submodule "libass"]
+	path = libass
+	url = https://github.com/libass/libass.git
+[submodule "freetype"]
+	path = freetype
+	url = https://gitlab.freedesktop.org/freetype/freetype.git
+[submodule "fribidi"]
+	path = fribidi
+	url = https://github.com/fribidi/fribidi.git
+[submodule "harfbuzz"]
+	path = harfbuzz
+	url = https://github.com/harfbuzz/harfbuzz.git

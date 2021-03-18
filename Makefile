@@ -1,6 +1,6 @@
 include Prelude.mk
 
-PACKAGES = freetype fribidi harfbuzz libass ffmpeg mpv
+PACKAGES = freetype fribidi harfbuzz libass ffmpeg mpv iconv zlib
 
 all:
 	$(MAKE) prepare

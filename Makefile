@@ -1,6 +1,6 @@
 include Prelude.mk
 
-PACKAGES = freetype fribidi
+PACKAGES = freetype fribidi harfbuzz
 
 all:
 	$(MAKE) prepare
@@ -18,6 +18,8 @@ apt-install:
 
 $(PACKAGES):
 	env PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PREFIX)/lib/pkgconfig $(MAKE) -f $@.mk
+
+harfbuzz: freetype
 
 PKG_CLEAN = $(addprefix clean-, $(PACKAGES))
 

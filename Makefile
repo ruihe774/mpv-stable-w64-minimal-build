@@ -1,6 +1,6 @@
 include Prelude.mk
 
-PACKAGES = freetype fribidi harfbuzz
+PACKAGES = freetype fribidi harfbuzz libass
 
 all:
 	$(MAKE) prepare
@@ -14,12 +14,13 @@ prepare:
 build: $(PACKAGES)
 
 apt-install:
-	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool unar --no-install-recommends
+	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool --no-install-recommends
 
 $(PACKAGES):
 	env PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PREFIX)/lib/pkgconfig $(MAKE) -f $@.mk
 
 harfbuzz: freetype
+libass: freetype harfbuzz fribidi
 
 PKG_CLEAN = $(addprefix clean-, $(PACKAGES))
 

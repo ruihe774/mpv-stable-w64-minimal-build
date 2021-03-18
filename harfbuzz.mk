@@ -4,7 +4,7 @@ SUB_MAKE = $(MAKE) -C harfbuzz
 
 build: dist/libharfbuzz-0.dll
 
-dist/libharfbuzz-0.dll: buildroot/bin/libharfbuzz-0.dll
+dist/libharfbuzz-0.dll: buildroot/bin/libharfbuzz-0.dll harfbuzz.files/harfbuzz.def
 	$(STRIP) $< -o $@
 
 buildroot/bin/libharfbuzz-0.dll: harfbuzz/Makefile

@@ -1,28 +1,29 @@
 include Prelude.mk
 
-SUB_MAKE = $(MAKE) -C harfbuzz
+SELF_MAKE = $(MAKE) -f harfbuzz.mk
+SUB_NINJA = ninja -C harfbuzz/build
 
-build: dist/libharfbuzz-0.dll
+build:
+	$(SELF_MAKE) patch
+	$(SELF_MAKE) dist/libharfbuzz-0.dll
 
-dist/libharfbuzz-0.dll: buildroot/bin/libharfbuzz-0.dll harfbuzz.files/harfbuzz.def
+dist/libharfbuzz-0.dll: buildroot/bin/libharfbuzz-0.dll
 	$(STRIP) $< -o $@
 
-buildroot/bin/libharfbuzz-0.dll: harfbuzz/Makefile
-	cp harfbuzz.files/harfbuzz.def harfbuzz/src/
-	-$(SUB_MAKE)
-	cp harfbuzz/src/.libs/libharfbuzz-0.dll buildroot/bin/
+buildroot/bin/libharfbuzz-0.dll: harfbuzz/build
+	$(SUB_NINJA)
+	$(SUB_NINJA) install
 
-harfbuzz/Makefile: harfbuzz/configure
-	cd harfbuzz && env 'CXXFLAGS=-DHB_TINY -Os' ./configure --host=$(TARGET) --prefix=$(PREFIX) --with-glib=no --with-cairo=no --with-fontconfig=no --with-icu=no --with-freetype=yes
-
-harfbuzz/configure:
-	cd harfbuzz && git checkout -- . && git apply ../harfbuzz.files/*.patch
-	cd harfbuzz && env NOCONFIGURE=1 ./autogen.sh
+harfbuzz/build:
+	cd harfbuzz && meson --prefix=$(PREFIX) --cross-file=../harfbuzz.files/meson_cross.txt --buildtype=minsize -Dtests=disabled -Dcpp_args=-DHB_TINY build .
 
 clean:
-	$(SUB_MAKE) clean
+	$(SUB_NINJA) clean
 
 distclean:
-	$(SUB_MAKE) distclean
+	rm -rf harfbuzz/build
 
-.PHONY: build clean distclean
+patch:
+	cd harfbuzz && git checkout -- . && git apply ../harfbuzz.files/*.patch
+
+.PHONY: build clean distclean patch

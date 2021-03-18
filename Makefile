@@ -37,4 +37,9 @@ distclean: $(PKG_DISTCLEAN)
 $(PKG_DISTCLEAN):
 	$(MAKE) -f $(subst distclean-,,$@).mk distclean
 
-.PHONY: all prepare build apt-install $(PACKAGES) clean $(PKG_CLEAN) distclean $(PKG_DISTCLEAN)
+pack:
+	-rm dist*.7z
+	cd dist && 7zr a ../dist.7z *
+	mv dist.7z "dist [`7zr h dist.7z|grep 'CRC32  for data'|tail -c 9`].7z"
+
+.PHONY: all prepare build apt-install $(PACKAGES) clean $(PKG_CLEAN) distclean $(PKG_DISTCLEAN) pack

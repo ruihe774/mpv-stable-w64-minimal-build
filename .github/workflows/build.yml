@@ -1,0 +1,28 @@
+name: Build
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: true
+
+    - name: Install prerequisites
+      run: sudo make apt-install
+
+    - name: Make
+      run: make
+
+    - name: Pack
+      run: make pack
+
+    - name: Upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist*.7z

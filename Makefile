@@ -1,6 +1,6 @@
 include Prelude.mk
 
-PACKAGES = freetype fribidi harfbuzz libass ffmpeg mpv iconv zlib
+PACKAGES = freetype fribidi harfbuzz libass ffmpeg mpv iconv zlib lua
 
 all:
 	$(MAKE) prepare
@@ -21,7 +21,7 @@ $(PACKAGES):
 
 harfbuzz: freetype
 libass: freetype harfbuzz fribidi
-mpv: libass ffmpeg
+mpv: libass ffmpeg lua
 
 PKG_CLEAN = $(addprefix clean-, $(PACKAGES))
 

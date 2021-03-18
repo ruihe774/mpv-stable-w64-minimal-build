@@ -1,0 +1,4 @@
+Name: Lua
+Description: Lua language engine
+Version: 5.2.4
+Libs: -llua

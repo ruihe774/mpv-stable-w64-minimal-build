@@ -16,6 +16,7 @@ harfbuzz/Makefile: harfbuzz/configure
 	cd harfbuzz && env 'CXXFLAGS=-DHB_TINY -Os' ./configure --host=$(TARGET) --prefix=$(PREFIX) --with-glib=no --with-cairo=no --with-fontconfig=no --with-icu=no --with-freetype=yes
 
 harfbuzz/configure:
+	cd harfbuzz && git checkout -- . && git apply ../harfbuzz.files/*.patch
 	cd harfbuzz && env NOCONFIGURE=1 ./autogen.sh
 
 clean:

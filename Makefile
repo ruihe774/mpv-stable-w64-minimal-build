@@ -1,6 +1,6 @@
 include Prelude.mk
 
-PACKAGES = freetype
+PACKAGES = freetype fribidi
 
 all:
 	$(MAKE) prepare
@@ -19,18 +19,18 @@ apt-install:
 $(PACKAGES):
 	env PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PREFIX)/lib/pkgconfig $(MAKE) -f $@.mk
 
-PKG_CLEAN = $(addprefix clean_, $(PACKAGES))
+PKG_CLEAN = $(addprefix clean-, $(PACKAGES))
 
 clean: $(PKG_CLEAN)
 
 $(PKG_CLEAN):
-	$(MAKE) -f $(subst clean_,,$@).mk clean
+	$(MAKE) -f $(subst clean-,,$@).mk clean
 
-PKG_DISTCLEAN = $(addprefix distclean_, $(PACKAGES))
+PKG_DISTCLEAN = $(addprefix distclean-, $(PACKAGES))
 
 distclean: $(PKG_DISTCLEAN)
 
 $(PKG_DISTCLEAN):
-	$(MAKE) -f $(subst distclean_,,$@).mk distclean
+	$(MAKE) -f $(subst distclean-,,$@).mk distclean
 
 .PHONY: all prepare build apt-install $(PACKAGES) clean $(PKG_CLEAN) distclean $(PKG_DISTCLEAN)

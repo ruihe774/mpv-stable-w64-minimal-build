@@ -1,8 +1,11 @@
 include Prelude.mk
 
 SUB_MAKE = $(MAKE) -C libass
+SELF_MAKE = $(MAKE) -f libass.mk
 
-build: dist/libass-9.dll
+build:
+	$(SELF_MAKE) patch
+	$(SELF_MAKE) dist/libass-9.dll
 
 dist/libass-9.dll: buildroot/bin/libass-9.dll
 	$(STRIP) $< -o $@
@@ -23,4 +26,7 @@ clean:
 distclean:
 	$(SUB_MAKE) distclean
 
-.PHONY: build clean distclean
+patch:
+	cd libass && git checkout -- . && git apply ../libass.files/*.patch
+
+.PHONY: build clean distclean patch

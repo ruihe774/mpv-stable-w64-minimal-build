@@ -1,0 +1,4 @@
+Name: libavutil
+Description: FFmpeg utility library
+Version: 56.51.100
+Libs: -lavutil

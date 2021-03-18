@@ -1,0 +1,4 @@
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 5.7.100
+Libs: -lswscale

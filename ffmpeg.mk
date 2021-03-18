@@ -24,8 +24,10 @@ $(addprefix $(PKGCFG)/, $(pcs)):
 	cp ffmpeg.files/$(notdir $@) $@
 
 $(UNARCHIVED): $(ARCHIVE)
+	rm -rf $(UNARCHIVED) $(DOWNLOADS)/ffmpeg-*-full_build-shared
 	cd $(DOWNLOADS) && p7zip -d -k $(notdir $<)
 	cd $(DOWNLOADS) && mv -T ffmpeg-*-full_build-shared $(notdir $@)
+	touch $@
 
 $(ARCHIVE):
 	wget '$(URL)' -O $(addsuffix .tmp, $@)

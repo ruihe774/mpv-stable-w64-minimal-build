@@ -13,3 +13,6 @@
 [submodule "harfbuzz"]
 	path = harfbuzz
 	url = https://github.com/harfbuzz/harfbuzz.git
+[submodule "ffnvcodec"]
+	path = ffnvcodec
+	url = https://git.videolan.org/git/ffmpeg/nv-codec-headers.git

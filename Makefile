@@ -20,7 +20,6 @@ apt-install:
 $(PACKAGES):
 	env PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PREFIX)/lib/pkgconfig $(MAKE) -f $@.mk
 
-harfbuzz: freetype
 libass: freetype harfbuzz fribidi
 mpv: libass ffmpeg lua ffnvcodec
 

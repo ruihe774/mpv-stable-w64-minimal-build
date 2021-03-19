@@ -15,7 +15,7 @@ buildroot/bin/libharfbuzz-0.dll: harfbuzz/build
 	$(SUB_NINJA) install
 
 harfbuzz/build:
-	cd harfbuzz && meson --prefix=$(PREFIX) --cross-file=../meson_cross.txt --buildtype=minsize -Dtests=disabled -Ddirectwrite=enabled '-Dcpp_args=-DHB_TINY -DHB_NO_OT_FONT -DHB_NO_OT_SHAPE -DHB_NO_OT -DHB_NO_FALLBACK_SHAPE -DHB_NO_UCD -DHB_NO_UNICODE_FUNCS' build .
+	cd harfbuzz && meson --prefix=$(PREFIX) --cross-file=../meson_cross.txt --buildtype=minsize -Dtests=disabled -Ddirectwrite=enabled -Dfreetype=disabled '-Dcpp_args=-DHB_TINY -DHB_NO_OT_FONT -DHB_NO_OT_SHAPE -DHB_NO_OT -DHB_NO_FALLBACK_SHAPE -DHB_NO_UCD -DHB_NO_UNICODE_FUNCS' build .
 
 clean:
 	$(SUB_NINJA) clean

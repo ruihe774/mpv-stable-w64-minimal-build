@@ -1,0 +1,37 @@
+diff --git a/meson.build b/meson.build
+index ea30495..108e162 100644
+--- a/meson.build
++++ b/meson.build
+@@ -260,20 +260,26 @@ endif
+ 
+ # PNG support
+ libpng_dep = dependency('libpng', required: get_option('png'))
+-ftoption_command += ['--enable=FT_CONFIG_OPTION_USE_PNG']
+-ft2_deps += [libpng_dep]
++if libpng_dep.found()
++  ftoption_command += ['--enable=FT_CONFIG_OPTION_USE_PNG']
++  ft2_deps += [libpng_dep]
++endif
+ 
+ # Harfbuzz support
+ harfbuzz_dep = dependency('harfbuzz',
+                  version: '>= 1.8.0',
+                  required: get_option('harfbuzz'))
+-ftoption_command += ['--enable=FT_CONFIG_OPTION_USE_HARFBUZZ']
+-ft2_deps += [harfbuzz_dep]
++if harfbuzz_dep.found()
++  ftoption_command += ['--enable=FT_CONFIG_OPTION_USE_HARFBUZZ']
++  ft2_deps += [harfbuzz_dep]
++endif
+ 
+ # Brotli decompression support
+ brotli_dep = dependency('libbrotlidec', required: get_option('brotli'))
+-ftoption_command += ['--enable=FT_CONFIG_OPTION_USE_BROTLI']
+-ft2_deps += [brotli_dep]
++if brotli_dep.found()
++  ftoption_command += ['--enable=FT_CONFIG_OPTION_USE_BROTLI']
++  ft2_deps += [brotli_dep]
++endif
+ 
+ # We can now generate `ftoption.h`.
+ ftoption_h = custom_target('ftoption.h',

@@ -1,24 +1,31 @@
 include Prelude.mk
 
-SUB_MAKE = $(MAKE) -C freetype
+SELF_MAKE = $(MAKE) -f freetype.mk
+SUB_NINJA = ninja -C freetype/build
 
-build: dist/libfreetype-6.dll
+build:
+	$(SELF_MAKE) patch
+	$(SELF_MAKE) dist/libfreetype-6.dll
 
 dist/libfreetype-6.dll: buildroot/bin/libfreetype-6.dll
 	$(STRIP) $< -o $@
 
-buildroot/bin/libfreetype-6.dll: freetype/config.mk
-	$(SUB_MAKE)
-	$(SUB_MAKE) install
+buildroot/bin/libfreetype-6.dll: freetype/build
+	$(SUB_NINJA)
+	$(SUB_NINJA) install
 
-freetype/config.mk: freetype/configure
-	cd freetype && ./autogen.sh
-	cd freetype && ./configure --host=$(TARGET) --prefix=$(PREFIX) --with-zlib=yes --with-bzip2=no --with-png=no --with-harfbuzz=no --with-brotli=no
+freetype/build:
+	cp freetype.files/modules.cfg freetype
+	cd freetype && meson --prefix=$(PREFIX) --cross-file=../meson_cross.txt --buildtype=release -Dzlib=disabled -Dbzip2=disabled -Dpng=disabled -Dharfbuzz=disabled -Dbrotli=disabled -Dmmap=disabled '-Dc_args=-DFT_CONFIG_MODULES_H=<ftmodule.h>' build .
+	cp freetype.files/ftoption.h freetype/build
 
 clean:
-	$(SUB_MAKE) clean
+	$(SUB_NINJA) clean
 
 distclean:
-	$(SUB_MAKE) distclean
+	rm -rf freetype/build
 
-.PHONY: build clean distclean
+patch:
+	cd freetype && git checkout -- . && git apply ../freetype.files/*.patch
+
+.PHONY: build clean distclean patch

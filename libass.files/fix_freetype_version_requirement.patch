@@ -1,0 +1,22 @@
+diff --git a/configure.ac b/configure.ac
+index cff3fe8..810aa22 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -133,7 +133,7 @@ AM_COND_IF([ENABLE_LARGE_TILES],
+     [AC_DEFINE(CONFIG_LARGE_TILES, 0, [use small tiles])],
+     )
+ 
+-PKG_CHECK_MODULES([FREETYPE], freetype2 >= 9.10.3, [
++PKG_CHECK_MODULES([FREETYPE], freetype2 >= 6.17.4, [
+     CFLAGS="$CFLAGS $FREETYPE_CFLAGS"
+     CXXFLAGS="$CFLAGS $FREETYPE_CFLAGS"
+     LIBS="$LIBS $FREETYPE_LIBS"
+@@ -235,7 +235,7 @@ if test "$use_libiconv" = true; then
+         pkg_libs="${pkg_libs} -liconv"
+     fi
+ fi
+-pkg_requires="freetype2 >= 9.10.3"
++pkg_requires="freetype2 >= 6.17.4"
+ pkg_requires="fribidi >= 0.19.0, ${pkg_requires}"
+ pkg_requires="harfbuzz >= 1.2.3, ${pkg_requires}"
+ if test x$fontconfig = xtrue; then

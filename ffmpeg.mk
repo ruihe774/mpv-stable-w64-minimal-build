@@ -25,7 +25,7 @@ $(pc_path):
 	cp $(SRC)/ffmpeg.files/$(notdir $@) $@
 
 $(UNARCHIVED): $(ARCHIVE)
-	rm -r $(UNARCHIVED) $(DOWNLOADS)/ffmpeg-*-full_build-shared
+	-rm -r $(UNARCHIVED) $(DOWNLOADS)/ffmpeg-*-full_build-shared
 	cd $(DOWNLOADS) && p7zip -d -k $(notdir $<)
 	cd $(DOWNLOADS) && mv -T ffmpeg-*-full_build-shared $(notdir $@)
 	touch $@

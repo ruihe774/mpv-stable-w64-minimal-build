@@ -1,6 +1,6 @@
 include Prelude.mk
 
-PACKAGES = $(patsubst %.mk,%,$(notdir $(wildcard $(SRC)/*.mk)))
+PACKAGES = $(patsubst %.mk,%,$(filter-out Prelude.mk,$(notdir $(wildcard $(SRC)/*.mk))))
 
 all:
 	+$(SELF_MAKE) prepare

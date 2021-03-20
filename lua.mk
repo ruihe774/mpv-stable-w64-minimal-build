@@ -12,13 +12,13 @@ $(BIN_DLL): $(PKG_SRC)
 	+$(LUA_MAKE) mingw
 	cd $(PKG_SRC)/src && $(HOST)-gcc -Wl,--out-implib=liblua.dll.a -shared -o lua52.dll lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o lauxlib.o lbaselib.o lbitlib.o lcorolib.o ldblib.o liolib.o lmathlib.o loslib.o lstrlib.o ltablib.o loadlib.o linit.o	# fuck!
 	+$(LUA_MAKE) install
-	cp $(PKG_FILES)/lua.pc $@
+	cp $(PKG_FILES)/lua.pc $(PKGCFG)
 
 $(PKG_SRC): $(UNARCHIVED)
 	cp -rT $< $@
 
 $(UNARCHIVED): $(ARCHIVE)
-	rm -r $@
+	-rm -r $@
 	cd $(DOWNLOADS) && tar -xf $(notdir $<) $(notdir $@)
 	touch $@
 

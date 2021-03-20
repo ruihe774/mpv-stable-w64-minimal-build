@@ -5,12 +5,12 @@ PREFIX = $(abspath ./buildroot)
 BIN = $(PREFIX)/bin
 INCLUDE = $(PREFIX)/include
 LIB = $(PREFIX)/lib
-PKGCFG = $(PREFIX)/pkgconfig
+PKGCFG = $(LIB)/pkgconfig
 DIST = ./dist
 DOWNLOADS = ./downloads
 
 HOST = x86_64-w64-mingw32
-PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PREFIX)/lib/pkgconfig
+PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PKGCFG)
 
 _pkg_mk_idx != expr $(words $(MAKEFILE_LIST)) - 1
 PKG_MK = $(notdir $(word $(_pkg_mk_idx),$(MAKEFILE_LIST)))

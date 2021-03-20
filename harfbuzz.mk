@@ -7,7 +7,6 @@ MESON_OPTIONS =\
 '-Dcpp_args=\
   -DHB_TINY\
   -DHB_NO_OT_FONT\
-  -DHB_NO_OT_SHAPE\
   -DHB_NO_OT\
   -DHB_NO_FALLBACK_SHAPE\
   -DHB_NO_UCD\

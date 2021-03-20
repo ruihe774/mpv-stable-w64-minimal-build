@@ -1,13 +1,11 @@
+NO_DIST = 1
+
 include Prelude.mk
 
-SUB_MAKE = $(MAKE) -C ffnvcodec
+build: $(INCLUDE)/ffnvcodec
 
-build: buildroot/include/ffnvcodec
-
-buildroot/include/ffnvcodec:
-	$(SUB_MAKE) PREFIX=$(PREFIX) install
+$(INCLUDE)/ffnvcodec:
+	+$(SUB_MAKE) PREFIX=$(PREFIX) install
 
 clean:
 distclean:
-
-.PHONY: build clean distclean

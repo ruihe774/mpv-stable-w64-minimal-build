@@ -1,4 +1,7 @@
-/buildroot
-/downloads
-/dist*
+buildroot
+downloads
+dist*
 /lua
+.*.patched
+*.build
+.vscode

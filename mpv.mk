@@ -1,28 +1,24 @@
 include Prelude.mk
 
-build: dist/mpv.exe dist/mpv.com
+$(DIST): $(DIST)/mpv.exe $(DIST)/mpv.com
 
-dist/mpv.exe: mpv/build/mpv.exe
+$(DIST)/mpv.exe: $(PKG_SRC)/build/mpv.exe
 	$(STRIP) $< -o $@
 
-dist/mpv.com: mpv/build/mpv.com
+$(DIST)/mpv.com: $(PKG_SRC)/build/mpv.com
 	$(STRIP) $< -o $@
 
-mpv/build/mpv.com: mpv/build/mpv.exe
+$(PKG_SRC)/build/mpv.exe $(PKG_SRC)/build/mpv.com &: $(PKG_SRC)/build/config.h
+	cd $(PKG_SRC) && ./waf
 
-mpv/build/mpv.exe: mpv/build/config.h
-	cd mpv && ./waf
+$(PKG_SRC)/build/config.h: $(PKG_SRC)/waf
+	cd $(PKG_SRC) && PKG_CONFIG=pkg-config TARGET=$(HOST) DEST_OS=win32 ./waf configure --disable-debug-build
 
-mpv/build/config.h: mpv/waf
-	cd mpv && env PKG_CONFIG=pkg-config TARGET=x86_64-w64-mingw32 DEST_OS=win32 ./waf configure --disable-debug-build
-
-mpv/waf:
-	cd mpv && ./bootstrap.py
+$(PKG_SRC)/waf:
+	cd $(PKG_SRC) && ./bootstrap.py
 
 clean:
-	cd mpv && ./waf clean
+	cd $(PKG_SRC) && ./waf clean
 
 distclean:
-	cd mpv && ./waf distclean
-
-.PHONY: build clean distclean
+	cd $(PKG_SRC) && ./waf distclean

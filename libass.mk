@@ -1,32 +1,19 @@
+DLL_NAME = libass-9.dll
+
 include Prelude.mk
 
-SUB_MAKE = $(MAKE) -C libass
-SELF_MAKE = $(MAKE) -f libass.mk
+$(BIN_DLL): $(PKG_SRC)/Makefile
+	+$(SUB_MAKE)
+	+$(SUB_MAKE) install
 
-build:
-	$(SELF_MAKE) patch
-	$(SELF_MAKE) dist/libass-9.dll
+$(PKG_SRC)/Makefile: $(PKG_SRC)/configure
+	$(SUB_CONFIGURE) --disable-fontconfig --enable-directwrite
 
-dist/libass-9.dll: buildroot/bin/libass-9.dll
-	$(STRIP) $< -o $@
-
-buildroot/bin/libass-9.dll: libass/Makefile
-	$(SUB_MAKE)
-	$(SUB_MAKE) install
-
-libass/Makefile: libass/configure
-	cd libass && ./configure --host=$(TARGET) --prefix=$(PREFIX) --disable-fontconfig --enable-directwrite
-
-libass/configure:
-	cd libass && ./autogen.sh
+$(PKG_SRC)/configure:
+	cd $(PKG_SRC) && ./autogen.sh
 
 clean:
-	$(SUB_MAKE) clean
+	+$(SUB_MAKE) clean
 
 distclean:
-	$(SUB_MAKE) distclean
-
-patch:
-	cd libass && git checkout -- . && git apply ../libass.files/*.patch
-
-.PHONY: build clean distclean patch
+	+$(SUB_MAKE) distclean

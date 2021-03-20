@@ -1,10 +1,6 @@
 SHELL = /bin/bash
 
-ifdef srcdir
-  SRC = $(abspath $(srcdir))
-else
-  SRC = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-endif
+SRC = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 PREFIX = $(abspath ./buildroot)
 BIN = $(PREFIX)/bin
 INCLUDE = $(PREFIX)/include
@@ -32,6 +28,15 @@ SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX)
 
 ifneq ($(PKG_NAME),toplevel)
 
+ifneq ($(wildcard $(PKG_FILES)/*.patch),)
+PATCH_RECORD = $(SRC)/.$(PKG_NAME).patched
+$(PATCH_RECORD):
+	cd $(PKG_SRC) && git checkout -- . && git apply $(PKG_FILES)/*.patch
+	touch $@
+patch: $(PATCH_RECORD)
+.PHONY: patch
+endif
+
 all:
   ifdef PATCH_RECORD
 	+$(SELF_MAKE) patch
@@ -47,15 +52,6 @@ FORCE:
 ifdef DLL_NAME
 BIN_DLL = $(BIN)/$(DLL_NAME)
 DIST_DLL = $(DIST)/$(DLL_NAME)
-endif
-
-ifneq ($(wildcard $(PKG_FILES)/*.patch),)
-PATCH_RECORD = $(SRC)/.$(PKG_NAME).patched
-$(PATCH_RECORD):
-	cd $(PKG_SRC) && git checkout -- . && git apply $(PKG_FILES)/*.patch
-	touch $@
-patch: $(PATCH_RECORD)
-.PHONY: patch
 endif
 
 STRIP = $(HOST)-strip --strip-unneeded

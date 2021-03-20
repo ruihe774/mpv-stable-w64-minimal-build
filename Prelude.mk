@@ -5,7 +5,7 @@ ifdef srcdir
 else
   SRC = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
-PREFIX = ./buildroot
+PREFIX = $(abspath ./buildroot)
 BIN = $(PREFIX)/bin
 INCLUDE = $(PREFIX)/include
 LIB = $(PREFIX)/lib
@@ -17,17 +17,16 @@ HOST = x86_64-w64-mingw32
 PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PREFIX)/lib/pkgconfig
 
 _pkg_mk_idx != expr $(words $(MAKEFILE_LIST)) - 1
-PKG_MK = $(word $(_pkg_mk_idx),$(MAKEFILE_LIST))
+PKG_MK = $(notdir $(word $(_pkg_mk_idx),$(MAKEFILE_LIST)))
 PKG_NAME = $(if $(subst Makefile,,$(PKG_MK)),$(basename $(PKG_MK)),toplevel)
 PKG_SRC = $(SRC)/$(PKG_NAME)
 PKG_FILES = $(SRC)/$(PKG_NAME).files
 PKG_BUILD = ./$(PKG_NAME).build
 
-SELF_MAKE = make -C $(SRC) -f $(PKG_MK)
+SELF_MAKE = make -f $(SRC)/$(PKG_MK)
 SUB_MAKE = make -C $(PKG_SRC)
 SUB_NINJA = ninja -C $(PKG_BUILD)
 SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX)
-TOP_MAKE = make -C $(SRC)
 
 .DEFAULT_GOAL = all
 
@@ -41,7 +40,9 @@ all:
   ifndef NO_DIST
 	+$(SELF_MAKE) dist
   endif
-.PHONY: all build clean distclean
+
+FORCE:
+.PHONY: all build clean distclean FORCE
 
 ifdef DLL_NAME
 BIN_DLL = $(BIN)/$(DLL_NAME)

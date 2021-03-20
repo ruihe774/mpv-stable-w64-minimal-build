@@ -13,6 +13,6 @@ HAVE_POSTCONFIG_HOOK = 1
 include Prelude.mk
 
 preconfig-hook:
-	cp freetype.files/modules.cfg freetype
+	cp $(PKG_FILES)/modules.cfg $(PKG_SRC)
 postconfig-hook:
-	cp freetype.files/ftoption.h freetype/build
+	cp $(PKG_FILES)/ftoption.h $(PKG_BUILD)

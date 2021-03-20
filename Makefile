@@ -3,8 +3,8 @@ include Prelude.mk
 PACKAGES = $(patsubst %.mk,%,$(notdir $(wildcard $(SRC)/*.mk)))
 
 all:
-	$(MAKE) prepare
-	$(MAKE) build
+	+$(SELF_MAKE) prepare
+	+$(SELF_MAKE) build
 
 prepare:
 	mkdir -p $(DOWNLOADS)
@@ -18,7 +18,7 @@ apt-install:
 	pip3 install meson --system
 
 $(PACKAGES):
-	+PKG_CONFIG_LIBDIR=$(PKG_CONFIG_LIBDIR) $(TOP_MAKE) -f $@.mk
+	PKG_CONFIG_LIBDIR=$(PKG_CONFIG_LIBDIR) $(MAKE) -f $(SRC)/$@.mk
 
 libass: freetype harfbuzz fribidi
 mpv: libass ffmpeg lua ffnvcodec
@@ -28,14 +28,14 @@ PKG_CLEAN = $(addprefix clean-,$(PACKAGES))
 clean: $(PKG_CLEAN)
 
 $(PKG_CLEAN):
-	+$(TOP_MAKE) -f $(patsubst clean-%,%,$@).mk clean
+	$(MAKE) -f $(SRC)/$(patsubst clean-%,%,$@).mk clean
 
 PKG_DISTCLEAN = $(addprefix distclean-,$(PACKAGES))
 
 distclean: $(PKG_DISTCLEAN)
 
 $(PKG_DISTCLEAN):
-	+$(TOP_MAKE) -f $(patsubst distclean-%,%,$@).mk distclean
+	$(MAKE) -f $(SRC)/$(patsubst distclean-%,%,$@).mk distclean
 
 pack:
 	-rm dist*.7z

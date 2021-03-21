@@ -100,4 +100,13 @@ endif
 
 endif
 
+ifdef COPYFROM_PATH
+dist: $(DIST)/$(notdir $(COPYFROM_PATH))
+$(DIST)/$(notdir $(COPYFROM_PATH)):
+	cp $(COPYFROM_PATH) $@
+build:
+clean:
+distclean:
+endif
+
 endif

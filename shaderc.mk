@@ -5,7 +5,7 @@ include Prelude.mk
 $(BIN_DLL): $(PKG_BUILD)
 	$(SUB_NINJA)
 	cp $(PKG_BUILD)/libshaderc/libshaderc_shared.dll $(BIN_DLL)
-	cp $(PKG_BUILD)/libshaderc/libshaderc_shared.dll.a $(BIN_DLL).a
+	cp $(PKG_BUILD)/libshaderc/libshaderc_shared.dll.a $(LIB)
 	cp -r $(PKG_SRC)/libshaderc/include/shaderc $(INCLUDE)
 	cp -r $(PKG_SRC)/libshaderc_util/include/libshaderc_util $(INCLUDE)
 	cp $(PKG_FILES)/shaderc.pc $(PKGCFG)

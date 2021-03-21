@@ -1,0 +1,4 @@
+Name: shaderc
+Description: A collection of tools, libraries, and tests for Vulkan shader compilation.
+Version: 2020.5.0
+Libs: -lshaderc_shared

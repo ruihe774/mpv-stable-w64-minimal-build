@@ -1,23 +1,25 @@
 SHELL = /bin/bash
 
 SRC = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-PREFIX = $(abspath ./buildroot)
+CWD = $(abspath .)
+PREFIX = $(CWD)/buildroot
 BIN = $(PREFIX)/bin
 INCLUDE = $(PREFIX)/include
 LIB = $(PREFIX)/lib
 PKGCFG = $(LIB)/pkgconfig
-DIST = ./dist
-DOWNLOADS = ./downloads
+DIST = $(CWD)/dist
+DOWNLOADS = $(CWD)/downloads
+MCF = $(CWD)/mingw-w64-mcf
 
 HOST = x86_64-w64-mingw32
-PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/lib/pkgconfig:$(PKGCFG)
+PKG_CONFIG_LIBDIR=/usr/$(HOST)/lib/pkgconfig:$(PKGCFG)
 
 _pkg_mk_idx != expr $(words $(MAKEFILE_LIST)) - 1
 PKG_MK = $(notdir $(word $(_pkg_mk_idx),$(MAKEFILE_LIST)))
 PKG_NAME = $(if $(subst Makefile,,$(PKG_MK)),$(basename $(PKG_MK)),toplevel)
 PKG_SRC = $(SRC)/$(PKG_NAME)
 PKG_FILES = $(SRC)/$(PKG_NAME).files
-PKG_BUILD = ./$(PKG_NAME).build
+PKG_BUILD = $(CWD)/$(PKG_NAME).build
 
 SELF_MAKE = make -f $(SRC)/$(PKG_MK)
 SUB_MAKE = make -C $(PKG_SRC)

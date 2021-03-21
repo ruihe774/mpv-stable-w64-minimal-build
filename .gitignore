@@ -2,6 +2,7 @@ buildroot
 downloads
 dist*
 /lua
+/shaderc
 .*.patched
 *.build
 .vscode

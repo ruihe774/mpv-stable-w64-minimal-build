@@ -16,9 +16,6 @@
 [submodule "ffnvcodec"]
 	path = ffnvcodec
 	url = https://github.com/FFmpeg/nv-codec-headers.git
-[submodule "shaderc"]
-	path = shaderc
-	url = https://github.com/google/shaderc.git
 [submodule "shaderc.good"]
 	path = shaderc.good
 	url = https://github.com/google/shaderc.git

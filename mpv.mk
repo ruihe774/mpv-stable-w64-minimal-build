@@ -1,6 +1,7 @@
 include Prelude.mk
 
-$(DIST): $(DIST)/mpv.exe $(DIST)/mpv.com
+dist: $(DIST)/mpv.exe $(DIST)/mpv.com
+build: $(PKG_SRC)/build/mpv.exe $(PKG_SRC)/build/mpv.com
 
 $(DIST)/mpv.exe: $(PKG_SRC)/build/mpv.exe
 	$(STRIP) $< -o $@

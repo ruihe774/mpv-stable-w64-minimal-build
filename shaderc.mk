@@ -3,6 +3,7 @@ DLL_NAME = libshaderc_shared.dll
 include Prelude.mk
 
 $(BIN_DLL): $(PKG_BUILD)
+	wineserver -p
 	$(SUB_NINJA)
 	cp $(PKG_BUILD)/libshaderc/libshaderc_shared.dll $(BIN_DLL)
 	cp $(PKG_BUILD)/libshaderc/libshaderc_shared.dll.a $(LIB)
@@ -11,6 +12,7 @@ $(BIN_DLL): $(PKG_BUILD)
 	cp $(PKG_FILES)/shaderc.pc $(PKGCFG)
 
 $(PKG_BUILD): $(PKG_SRC) $(MCF)/$(HOST)-gcc-mcf $(MCF)/$(HOST)-g++-mcf
+	wineserver -p
 	PATH=$(MCF):$$PATH cmake -H$(PKG_SRC) -B$(PKG_BUILD) -GNinja\
 		-DCMAKE_BUILD_TYPE=Release\
 		-DSHADERC_SKIP_TESTS=ON\
@@ -19,7 +21,7 @@ $(PKG_BUILD): $(PKG_SRC) $(MCF)/$(HOST)-gcc-mcf $(MCF)/$(HOST)-g++-mcf
 
 
 $(MCF)/$(HOST)-gcc-mcf $(MCF)/$(HOST)-g++-mcf:
-	echo 'WINEPATH=$(MCF)/bin wine64-stable $(addsuffix .exe,$(patsubst %-mcf,%,$(notdir $@))) "$$@"' > $@
+	echo 'WINEPATH=$(MCF)/bin wine $(addsuffix .exe,$(patsubst %-mcf,%,$(notdir $@))) "$$@"' > $@
 	chmod +x $@
 
 $(PKG_SRC):

@@ -21,7 +21,7 @@ $(PACKAGES):
 	PKG_CONFIG_LIBDIR=$(PKG_CONFIG_LIBDIR) $(MAKE) -f $(SRC)/$@.mk
 
 libass: freetype harfbuzz fribidi
-mpv: libass ffmpeg lua ffnvcodec shaderc
+mpv: libass ffmpeg lua ffnvcodec shaderc spirv-cross
 shaderc: mingw-w64-mcf
 
 PKG_CLEAN = $(addprefix clean-,$(PACKAGES))

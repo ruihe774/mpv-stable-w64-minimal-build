@@ -56,7 +56,7 @@ BIN_DLL = $(BIN)/$(DLL_NAME)
 DIST_DLL = $(DIST)/$(DLL_NAME)
 endif
 
-STRIP = $(HOST)-strip --strip-unneeded
+STRIP = $(HOST)-strip -s
 ifdef DLL_NAME
 dist: $(DIST_DLL)
 $(DIST_DLL): $(BIN_DLL)

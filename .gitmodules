@@ -16,6 +16,9 @@
 [submodule "ffnvcodec"]
 	path = ffnvcodec
 	url = https://github.com/FFmpeg/nv-codec-headers.git
-[submodule "shaderc.good"]
+[submodule "shaderc"]
 	path = shaderc.good
 	url = https://github.com/google/shaderc.git
+[submodule "spirv-cross"]
+	path = spirv-cross
+	url = https://github.com/KhronosGroup/SPIRV-Cross.git

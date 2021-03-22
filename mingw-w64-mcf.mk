@@ -24,7 +24,7 @@ $(DIST)/mcfgthread-12.dll: $(MCF)
 	cp $(MCF)/bin/mcfgthread-12.dll $@
 
 $(MCF)/$(HOST)-gcc-mcf $(MCF)/$(HOST)-g++-mcf: $(MCF)
-	echo 'WINEPATH=$(MCF)/bin wine $(addsuffix .exe,$(patsubst %-mcf,%,$(notdir $@))) "$$@"' > $@
+	echo 'WINEPATH=$(MCF)/bin wine64 $(addsuffix .exe,$(patsubst %-mcf,%,$(notdir $@))) "$$@"' > $@
 	chmod +x $@
 
 clean:

@@ -10,20 +10,16 @@ $(BIN_DLL): $(PKG_BUILD)
 	cp -r $(PKG_SRC)/libshaderc_util/include/libshaderc_util $(INCLUDE)
 	cp $(PKG_FILES)/shaderc.pc $(PKGCFG)
 
-$(PKG_BUILD): $(PKG_SRC) $(MCF)/$(HOST)-gcc-mcf $(MCF)/$(HOST)-g++-mcf
+$(PKG_BUILD): $(PKG_SRC)
 	PATH=$(MCF):$$PATH cmake -H$(PKG_SRC) -B$(PKG_BUILD) -GNinja\
 		-DCMAKE_BUILD_TYPE=Release\
 		-DSHADERC_SKIP_TESTS=ON\
 		-DSHADERC_SKIP_SPVC=ON\
 		-DCMAKE_TOOLCHAIN_FILE=$(PKG_FILES)/toolchain.cmake
 
-
-$(MCF)/$(HOST)-gcc-mcf $(MCF)/$(HOST)-g++-mcf:
-	echo 'WINEPATH=$(MCF)/bin wine $(addsuffix .exe,$(patsubst %-mcf,%,$(notdir $@))) "$$@"' > $@
-	chmod +x $@
-
 $(PKG_SRC):
 	cd $(SRC)/shaderc.good && ./update_shaderc_sources.py
+	-rm -r $@
 	ln -s $(SRC)/shaderc.good/src $@
 
 clean:

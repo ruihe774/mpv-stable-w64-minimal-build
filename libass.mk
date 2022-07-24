@@ -1,4 +1,4 @@
-DLL_NAME = libass-9.dll
+DLL_NAME = libass.9.dylib
 
 include Prelude.mk
 
@@ -7,7 +7,7 @@ $(BIN_DLL): $(PKG_SRC)/Makefile
 	+$(SUB_MAKE) install
 
 $(PKG_SRC)/Makefile: $(PKG_SRC)/configure
-	$(SUB_CONFIGURE) --disable-fontconfig --enable-directwrite
+	$(SUB_CONFIGURE) --disable-fontconfig
 
 $(PKG_SRC)/configure:
 	cd $(PKG_SRC) && ./autogen.sh

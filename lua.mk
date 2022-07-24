@@ -1,8 +1,8 @@
-DLL_NAME = lua52.dll
+DLL_NAME = liblua52.dylib
 
 include Prelude.mk
 
-LUA_MAKE = $(SUB_MAKE) INSTALL_TOP=$(PREFIX) CC=$(HOST)-gcc TO_BIN=lua52.dll TO_LIB=liblua.dll.a
+LUA_MAKE = $(SUB_MAKE) INSTALL_TOP=$(PREFIX) TO_BIN=liblua52.dylib
 
 UNARCHIVED = $(DOWNLOADS)/lua-5.2.4
 ARCHIVE = $(DOWNLOADS)/lua-5.2.4.tar.gz
@@ -10,7 +10,7 @@ URL = https://www.lua.org/ftp/lua-5.2.4.tar.gz
 
 $(BIN_DLL): $(PKG_SRC)
 	+$(LUA_MAKE) mingw
-	cd $(PKG_SRC)/src && $(HOST)-gcc -Wl,--out-implib=liblua.dll.a -shared -o lua52.dll lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o lauxlib.o lbaselib.o lbitlib.o lcorolib.o ldblib.o liolib.o lmathlib.o loslib.o lstrlib.o ltablib.o loadlib.o linit.o	# fuck!
+	cd $(PKG_SRC)/src && cc -shared -o liblua52.dylib lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o ltm.o lundump.o lvm.o lzio.o lauxlib.o lbaselib.o lbitlib.o lcorolib.o ldblib.o liolib.o lmathlib.o loslib.o lstrlib.o ltablib.o loadlib.o linit.o	# fuck!
 	+$(LUA_MAKE) install
 	cp $(PKG_FILES)/lua.pc $(PKGCFG)
 
@@ -23,7 +23,7 @@ $(UNARCHIVED): $(ARCHIVE)
 	touch $@
 
 $(ARCHIVE):
-	wget '$(URL)' -O $(addsuffix .tmp,$@)
+	curl -fsSL '$(URL)' -o $(addsuffix .tmp,$@)
 	mv $(addsuffix .tmp,$@) $@
 
 clean:

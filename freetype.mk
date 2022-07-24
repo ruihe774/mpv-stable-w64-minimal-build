@@ -1,4 +1,4 @@
-DLL_NAME = libfreetype-6.dll
+DLL_NAME = libfreetype.6.dylib
 MESON_OPTIONS =\
 --buildtype=release\
 -Dzlib=disabled\

@@ -7,14 +7,10 @@ BIN = $(PREFIX)/bin
 INCLUDE = $(PREFIX)/include
 LIB = $(PREFIX)/lib
 PKGCFG = $(LIB)/pkgconfig
-DIST = $(CWD)/dist
-DOWNLOADS = $(CWD)/downloads
-MCF = $(CWD)/mingw-w64-mcf
 
-HOST = x86_64-w64-mingw32
-PKG_CONFIG_LIBDIR=/usr/$(HOST)/lib/pkgconfig:$(PKGCFG)
+PKG_CONFIG_LIBDIR=$(PKGCFG)
 
-_pkg_mk_idx != expr $(words $(MAKEFILE_LIST)) - 1
+_pkg_mk_idx = $(shell expr $(words $(MAKEFILE_LIST)) - 1)
 PKG_MK = $(notdir $(word $(_pkg_mk_idx),$(MAKEFILE_LIST)))
 PKG_NAME = $(if $(subst Makefile,,$(PKG_MK)),$(basename $(PKG_MK)),toplevel)
 PKG_SRC = $(SRC)/$(PKG_NAME)
@@ -24,7 +20,7 @@ PKG_BUILD = $(CWD)/$(PKG_NAME).build
 SELF_MAKE = make -f $(SRC)/$(PKG_MK)
 SUB_MAKE = make -C $(PKG_SRC)
 SUB_NINJA = ninja -C $(PKG_BUILD)
-SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX)
+SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --prefix=$(PREFIX)
 
 .DEFAULT_GOAL = all
 
@@ -44,27 +40,13 @@ all:
 	+$(SELF_MAKE) patch
   endif
 	+$(SELF_MAKE) build
-  ifndef NO_DIST
-	+$(SELF_MAKE) dist
-  endif
 
 FORCE:
 .PHONY: all build clean distclean FORCE
 
 ifdef DLL_NAME
-BIN_DLL = $(BIN)/$(DLL_NAME)
-DIST_DLL = $(DIST)/$(DLL_NAME)
+BIN_DLL = $(LIB)/$(DLL_NAME)
 endif
-
-STRIP = $(HOST)-strip -s
-ifdef DLL_NAME
-dist: $(DIST_DLL)
-$(DIST_DLL): $(BIN_DLL)
-	$(STRIP) $(BIN_DLL) -o $(DIST_DLL)
-.PHONY: dist
-endif
-
-MESON_CROSS = $(SRC)/meson_cross.txt
 
 ifdef DLL_NAME
 
@@ -86,7 +68,7 @@ $(PKG_BUILD):
   ifdef HAVE_PRECONFIG_HOOK
 	+$(SELF_MAKE) preconfig-hook
   endif
-	meson --prefix=$(PREFIX) --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
+	meson --prefix=$(PREFIX) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
   ifdef HAVE_POSTCONFIG_HOOK
 	+$(SELF_MAKE) postconfig-hook
   endif
@@ -98,15 +80,6 @@ distclean:
 
 endif
 
-endif
-
-ifdef COPYFROM_PATH
-dist: $(DIST)/$(notdir $(COPYFROM_PATH))
-$(DIST)/$(notdir $(COPYFROM_PATH)):
-	$(STRIP) $(COPYFROM_PATH) -o $@
-build:
-clean:
-distclean:
 endif
 
 endif

@@ -1,4 +1,4 @@
-DLL_NAME = libfribidi-0.dll
+DLL_NAME = libfribidi.0.dylib
 MESON_OPTIONS =\
 --buildtype=release\
 -Ddeprecated=false\

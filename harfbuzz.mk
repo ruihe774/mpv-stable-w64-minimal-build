@@ -1,8 +1,7 @@
-DLL_NAME = libharfbuzz-0.dll
+DLL_NAME = libharfbuzz.0.dylib
 MESON_OPTIONS =\
 --buildtype=minsize\
 -Dtests=disabled\
--Ddirectwrite=enabled\
 -Dfreetype=disabled\
 '-Dcpp_args=\
   -DHB_TINY\

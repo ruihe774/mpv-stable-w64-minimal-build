@@ -1,19 +1,16 @@
 include Prelude.mk
 
-dist: $(DIST)/mpv.exe $(DIST)/mpv.com
-build: $(PKG_SRC)/build/mpv.exe $(PKG_SRC)/build/mpv.com
+dist: $(DIST)/mpv
+build: $(PKG_SRC)/build/mpv
 
-$(DIST)/mpv.exe: $(PKG_SRC)/build/mpv.exe
+$(DIST)/mpv: $(PKG_SRC)/build/mpv
 	$(STRIP) $< -o $@
 
-$(DIST)/mpv.com: $(PKG_SRC)/build/mpv.com
-	$(STRIP) $< -o $@
-
-$(PKG_SRC)/build/mpv.exe $(PKG_SRC)/build/mpv.com &: $(PKG_SRC)/build/config.h
+$(PKG_SRC)/build/mpv: $(PKG_SRC)/build/config.h
 	cd $(PKG_SRC) && ./waf
 
 $(PKG_SRC)/build/config.h: $(PKG_SRC)/waf
-	cd $(PKG_SRC) && PKG_CONFIG=pkg-config TARGET=$(HOST) DEST_OS=win32 ./waf configure --disable-debug-build
+	cd $(PKG_SRC) && PKG_CONFIG=pkg-config ./waf configure --disable-debug-build
 
 $(PKG_SRC)/waf:
 	cd $(PKG_SRC) && ./bootstrap.py

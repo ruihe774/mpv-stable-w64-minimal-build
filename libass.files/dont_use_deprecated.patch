@@ -1,8 +1,8 @@
 diff --git a/libass/ass_shaper.c b/libass/ass_shaper.c
-index 3718e45..acefd7c 100644
+index 77cf909..10fc771 100644
 --- a/libass/ass_shaper.c
 +++ b/libass/ass_shaper.c
-@@ -360,26 +360,6 @@ cached_v_origin(hb_font_t *font, void *font_data, hb_codepoint_t glyph,
+@@ -371,26 +371,6 @@ cached_v_origin(hb_font_t *font, void *font_data, hb_codepoint_t glyph,
      return true;
  }
  
@@ -29,7 +29,7 @@ index 3718e45..acefd7c 100644
  static hb_bool_t
  cached_extents(hb_font_t *font, void *font_data, hb_codepoint_t glyph,
                 hb_glyph_extents_t *extents, void *user_data)
-@@ -476,10 +456,6 @@ static hb_font_t *get_hb_font(ASS_Shaper *shaper, GlyphInfo *info)
+@@ -487,10 +467,6 @@ static hb_font_t *get_hb_font(ASS_Shaper *shaper, GlyphInfo *info)
                  metrics, NULL);
          hb_font_funcs_set_glyph_v_origin_func(funcs, cached_v_origin,
                  metrics, NULL);

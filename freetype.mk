@@ -1,12 +1,13 @@
 DLL_NAME = libfreetype-6.dll
 MESON_OPTIONS =\
 --buildtype=release\
--Dzlib=disabled\
--Dbzip2=disabled\
--Dpng=disabled\
--Dharfbuzz=disabled\
 -Dbrotli=disabled\
-'-Dc_args=-DFT_CONFIG_MODULES_H=<ftmodule.h>'
+-Dbzip2=disabled\
+-Dharfbuzz=disabled\
+-Dmmap=enabled\
+-Dpng=disabled\
+-Dtests=disabled\
+-Dzlib=disabled
 HAVE_PRECONFIG_HOOK = 1
 HAVE_POSTCONFIG_HOOK = 1
 

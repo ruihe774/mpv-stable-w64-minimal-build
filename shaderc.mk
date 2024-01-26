@@ -11,7 +11,7 @@ $(BIN_DLL): $(PKG_BUILD)
 	cp $(PKG_FILES)/shaderc.pc $(PKGCFG)
 
 $(PKG_BUILD): $(PKG_SRC)
-	PATH=$(MCF):$$PATH cmake -H$(PKG_SRC) -B$(PKG_BUILD) -GNinja\
+	cmake -H$(PKG_SRC) -B$(PKG_BUILD) -GNinja\
 		-DCMAKE_BUILD_TYPE=Release\
 		-DSHADERC_SKIP_TESTS=ON\
 		-DSHADERC_SKIP_SPVC=ON\

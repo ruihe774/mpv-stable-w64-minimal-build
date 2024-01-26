@@ -9,7 +9,6 @@ LIB = $(PREFIX)/lib
 PKGCFG = $(LIB)/pkgconfig
 DIST = $(CWD)/dist
 DOWNLOADS = $(CWD)/downloads
-MCF = $(CWD)/mingw-w64-mcf
 
 HOST = x86_64-w64-mingw32
 PKG_CONFIG_LIBDIR=/usr/$(HOST)/lib/pkgconfig:$(PKGCFG)

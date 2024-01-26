@@ -1,4 +1,4 @@
 Name: libswresample
 Description: FFmpeg audio resampling library
-Version: 3.7.100
+Version: 4.12.100
 Libs: -lswresample

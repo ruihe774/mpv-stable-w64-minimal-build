@@ -1,4 +1,4 @@
 Name: libavcodec
 Description: FFmpeg codec library
-Version: 58.91.100
+Version: 60.31.102
 Libs: -lavcodec

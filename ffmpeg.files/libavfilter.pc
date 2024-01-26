@@ -1,4 +1,4 @@
 Name: libavfilter
 Description: FFmpeg audio/video filtering library
-Version: 7.85.100
+Version: 9.12.100
 Libs: -lavfilter

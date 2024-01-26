@@ -1,4 +1,4 @@
 Name: libavformat
 Description: FFmpeg container format library
-Version: 58.45.100
+Version: 60.16.100
 Libs: -lavformat

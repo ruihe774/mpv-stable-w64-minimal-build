@@ -14,7 +14,8 @@ prepare:
 build: $(PACKAGES)
 
 apt-install:
-	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool p7zip wget ninja-build meson cmake yasm nasm --no-install-recommends
+	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool p7zip wget ninja-build cmake yasm nasm python-is-python3 python3-pip --no-install-recommends
+	pip3 install meson
 
 $(PACKAGES):
 	PKG_CONFIG_LIBDIR=$(PKG_CONFIG_LIBDIR) $(MAKE) -f $(SRC)/$@.mk

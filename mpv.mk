@@ -1,25 +1,16 @@
+MESON_OPTIONS =\
+--buildtype=release\
+
 include Prelude.mk
 
 dist: $(DIST)/mpv.exe $(DIST)/mpv.com
-build: $(PKG_SRC)/build/mpv.exe $(PKG_SRC)/build/mpv.com
+build: $(PKG_BUILD)/mpv.exe $(PKG_BUILD)/generated/mpv.com
 
-$(DIST)/mpv.exe: $(PKG_SRC)/build/mpv.exe
+$(DIST)/mpv.exe: $(PKG_BUILD)/mpv.exe
 	$(STRIP) $< -o $@
 
-$(DIST)/mpv.com: $(PKG_SRC)/build/mpv.com
+$(DIST)/mpv.com: $(PKG_BUILD)/generated/mpv.com
 	$(STRIP) $< -o $@
 
-$(PKG_SRC)/build/mpv.exe $(PKG_SRC)/build/mpv.com &: $(PKG_SRC)/build/config.h
-	cd $(PKG_SRC) && ./waf
-
-$(PKG_SRC)/build/config.h: $(PKG_SRC)/waf
-	cd $(PKG_SRC) && PKG_CONFIG=pkg-config TARGET=$(HOST) DEST_OS=win32 ./waf configure --disable-debug-build
-
-$(PKG_SRC)/waf:
-	cd $(PKG_SRC) && ./bootstrap.py
-
-clean:
-	cd $(PKG_SRC) && ./waf clean
-
-distclean:
-	cd $(PKG_SRC) && ./waf distclean
+$(PKG_BUILD)/mpv.exe $(PKG_BUILD)/generated/mpv.com &: $(PKG_BUILD)
+	$(SUB_NINJA)

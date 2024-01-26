@@ -50,24 +50,26 @@ all:
 FORCE:
 .PHONY: all build clean distclean FORCE
 
+STRIP = $(HOST)-strip -s
+
 ifdef DLL_NAME
+
 BIN_DLL = $(BIN)/$(DLL_NAME)
 DIST_DLL = $(DIST)/$(DLL_NAME)
-endif
 
-STRIP = $(HOST)-strip -s
-ifdef DLL_NAME
 dist: $(DIST_DLL)
 $(DIST_DLL): $(BIN_DLL)
 	$(STRIP) $(BIN_DLL) -o $(DIST_DLL)
 .PHONY: dist
+
+build: $(BIN_DLL)
+
 endif
 
 MESON_CROSS = $(SRC)/meson_cross.txt
 
-ifdef DLL_NAME
+ifdef MESON_OPTIONS
 
-build: $(BIN_DLL)
 ifdef HAVE_PRECONFIG_HOOK
 .PHONY: preconfig-hook
 endif
@@ -75,17 +77,19 @@ ifdef HAVE_POSTCONFIG_HOOK
 .PHONY: postconfig-hook
 endif
 
-ifdef MESON_OPTIONS
+ifdef DLL_NAME
 
 $(BIN_DLL): $(PKG_BUILD) FORCE
 	$(SUB_NINJA)
 	$(SUB_NINJA) install
 
+endif
+
 $(PKG_BUILD):
   ifdef HAVE_PRECONFIG_HOOK
 	+$(SELF_MAKE) preconfig-hook
   endif
-	meson --prefix=$(PREFIX) --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
+	meson --prefix=$(PREFIX) -Dc_link_args=-L$(LIB) --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
   ifdef HAVE_POSTCONFIG_HOOK
 	+$(SELF_MAKE) postconfig-hook
   endif
@@ -94,8 +98,6 @@ clean:
 	$(SUB_NINJA) clean
 distclean:
 	rm -rf $(PKG_BUILD)
-
-endif
 
 endif
 

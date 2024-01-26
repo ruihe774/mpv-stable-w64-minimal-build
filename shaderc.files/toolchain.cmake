@@ -9,9 +9,9 @@ set(MINGW_SYSROOT "/usr/${MINGW_COMPILER_PREFIX}" CACHE STRING
 # Which compilers to use for C and C++
 find_program(CMAKE_RC_COMPILER NAMES ${MINGW_COMPILER_PREFIX}-windres)
 find_program(CMAKE_C_COMPILER NAMES
-	     ${MINGW_COMPILER_PREFIX}-gcc)
+	     ${MINGW_COMPILER_PREFIX}-gcc-posix)
 find_program(CMAKE_CXX_COMPILER NAMES
-	     ${MINGW_COMPILER_PREFIX}-g++)
+	     ${MINGW_COMPILER_PREFIX}-g++-posix)
 
 SET(CMAKE_FIND_ROOT_PATH ${MINGW_SYSROOT})
 

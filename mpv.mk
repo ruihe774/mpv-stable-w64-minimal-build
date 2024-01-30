@@ -1,6 +1,5 @@
 MESON_OPTIONS =\
--Dcplugins=disabled\
--Db_lto=false
+-Dcplugins=disabled
 
 include Prelude.mk
 

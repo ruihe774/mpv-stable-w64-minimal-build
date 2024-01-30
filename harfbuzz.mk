@@ -1,5 +1,6 @@
 DLL_NAME = libharfbuzz-0.dll
 MESON_OPTIONS =\
+--buildtype=minsize\
 -Dtests=disabled\
 -Dfreetype=disabled\
 '-Dcpp_args=\

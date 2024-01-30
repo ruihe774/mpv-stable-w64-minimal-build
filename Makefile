@@ -22,7 +22,7 @@ $(PACKAGES):
 
 libass: freetype harfbuzz fribidi
 mpv: libass ffmpeg lua shaderc spirv-cross libplacebo
-libplacebo: shaderc
+libplacebo: shaderc spirv-cross
 
 PKG_CLEAN = $(addprefix clean-,$(PACKAGES))
 

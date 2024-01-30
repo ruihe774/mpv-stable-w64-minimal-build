@@ -11,19 +11,25 @@ DIST = $(CWD)/dist
 DOWNLOADS = $(CWD)/downloads
 
 HOST = x86_64-w64-mingw32
+STRIP = $(HOST)-strip -s
 PKG_CONFIG_LIBDIR=/usr/$(HOST)/lib/pkgconfig:$(PKGCFG)
 
-_pkg_mk_idx != expr $(words $(MAKEFILE_LIST)) - 1
-PKG_MK = $(notdir $(word $(_pkg_mk_idx),$(MAKEFILE_LIST)))
+PKG_MK = $(notdir $(lastword $(subst $(lastword $(MAKEFILE_LIST)),,$(MAKEFILE_LIST))))
 PKG_NAME = $(if $(subst Makefile,,$(PKG_MK)),$(basename $(PKG_MK)),toplevel)
 PKG_SRC = $(SRC)/$(PKG_NAME)
 PKG_FILES = $(SRC)/$(PKG_NAME).files
 PKG_BUILD = $(CWD)/$(PKG_NAME).build
 
-SELF_MAKE = make -f $(SRC)/$(PKG_MK)
-SUB_MAKE = make -C $(PKG_SRC)
+SELF_MAKE = $(MAKE) -f $(SRC)/$(PKG_MK)
+SUB_MAKE = $(MAKE) -C $(PKG_SRC)
 SUB_NINJA = ninja -C $(PKG_BUILD)
-SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX) CFLAGS=-flto
+
+MESON_CROSS = $(SRC)/meson_cross.txt
+CMAKE_TOOLCHAIN = $(SRC)/toolchain.cmake
+
+SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX) CFLAGS="-flto -O3"
+SUB_MESON = meson --prefix=$(PREFIX) --buildtype=release -Dc_link_args=-L$(LIB) -Dcpp_rtti=false -Db_lto=true --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
+SUB_CMAKE = cmake -H$(PKG_SRC) -B$(PKG_BUILD) -GNinja -DCMAKE_INSTALL_PREFIX=$(PREFIX) -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(CMAKE_TOOLCHAIN) $(CMAKE_OPTIONS)
 
 .DEFAULT_GOAL = all
 
@@ -48,9 +54,11 @@ all:
   endif
 
 FORCE:
-.PHONY: all build clean distclean FORCE
 
-STRIP = $(HOST)-strip -s
+.PHONY: all build clean distclean FORCE
+ifndef NO_DIST
+.PHONY: dist
+endif
 
 ifdef DLL_NAME
 
@@ -58,17 +66,13 @@ BIN_DLL = $(BIN)/$(DLL_NAME)
 DIST_DLL = $(DIST)/$(DLL_NAME)
 
 dist: $(DIST_DLL)
+
 $(DIST_DLL): $(BIN_DLL)
 	$(STRIP) $(BIN_DLL) -o $(DIST_DLL)
-.PHONY: dist
 
 build: $(BIN_DLL)
 
 endif
-
-MESON_CROSS = $(SRC)/meson_cross.txt
-
-ifdef MESON_OPTIONS
 
 ifdef HAVE_PRECONFIG_HOOK
 .PHONY: preconfig-hook
@@ -76,6 +80,8 @@ endif
 ifdef HAVE_POSTCONFIG_HOOK
 .PHONY: postconfig-hook
 endif
+
+ifdef MESON_OPTIONS
 
 ifdef DLL_NAME
 
@@ -89,7 +95,7 @@ $(PKG_BUILD):
   ifdef HAVE_PRECONFIG_HOOK
 	+$(SELF_MAKE) preconfig-hook
   endif
-	meson --prefix=$(PREFIX) -Dc_link_args=-L$(LIB) -Db_lto=true --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
+	$(SUB_MESON)
   ifdef HAVE_POSTCONFIG_HOOK
 	+$(SELF_MAKE) postconfig-hook
   endif
@@ -97,7 +103,33 @@ $(PKG_BUILD):
 clean:
 	$(SUB_NINJA) clean
 distclean:
-	rm -rf $(PKG_BUILD)
+	-rm -rf $(PKG_BUILD)
+
+endif
+
+ifdef CMAKE_OPTIONS
+
+ifdef DLL_NAME
+
+$(BIN_DLL): $(PKG_BUILD) FORCE
+	$(SUB_NINJA)
+	$(SUB_NINJA) install
+
+endif
+
+$(PKG_BUILD):
+  ifdef HAVE_PRECONFIG_HOOK
+	+$(SELF_MAKE) preconfig-hook
+  endif
+	$(SUB_CMAKE)
+  ifdef HAVE_POSTCONFIG_HOOK
+	+$(SELF_MAKE) postconfig-hook
+  endif
+
+clean:
+	$(SUB_NINJA) clean
+distclean:
+	-rm -rf $(PKG_BUILD)
 
 endif
 

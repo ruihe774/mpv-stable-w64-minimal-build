@@ -2,7 +2,7 @@ DLL_NAME = libshaderc_shared.dll
 
 include Prelude.mk
 
-$(BIN_DLL): $(PKG_BUILD)
+$(BIN_DLL): $(PKG_BUILD) FORCE
 	$(SUB_NINJA)
 	cp $(PKG_BUILD)/libshaderc/libshaderc_shared.dll $(BIN_DLL)
 	cp $(PKG_BUILD)/libshaderc/libshaderc_shared.dll.a $(LIB)
@@ -11,12 +11,10 @@ $(BIN_DLL): $(PKG_BUILD)
 	cp $(PKG_FILES)/shaderc.pc $(PKGCFG)
 
 $(PKG_BUILD): $(PKG_SRC)
-	cmake -H$(PKG_SRC) -B$(PKG_BUILD) -GNinja\
-		-DCMAKE_BUILD_TYPE=Release\
+	$(SUB_CMAKE)\
 		-DSHADERC_SKIP_TESTS=ON\
 		-DSHADERC_SKIP_EXAMPLES=ON\
-		-DDISABLE_EXCEPTIONS=ON\
-		-DCMAKE_TOOLCHAIN_FILE=$(SRC)/toolchain.cmake
+		-DDISABLE_EXCEPTIONS=ON
 
 $(PKG_SRC):
 	cd $(SRC)/shaderc.good && ./update_shaderc_sources.py
@@ -27,4 +25,4 @@ clean:
 	$(SUB_NINJA) clean
 
 distclean:
-	rm -rf $(PKG_BUILD)
+	-rm -rf $(PKG_BUILD)

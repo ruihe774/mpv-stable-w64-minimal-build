@@ -14,7 +14,7 @@ prepare:
 build: $(PACKAGES)
 
 apt-install:
-	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool p7zip wget ninja-build cmake yasm nasm python-is-python3 python3-pip --no-install-recommends
+	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool p7zip wget ninja-build cmake nasm python-is-python3 python3-pip --no-install-recommends
 	pip3 install meson
 
 $(PACKAGES):
@@ -37,9 +37,4 @@ distclean: $(PKG_DISTCLEAN)
 $(PKG_DISTCLEAN):
 	$(MAKE) -f $(SRC)/$(patsubst distclean-%,%,$@).mk distclean
 
-pack:
-	-rm dist*.7z
-	cd dist && 7zr a ../dist.7z *
-	mv dist.7z "dist [`7zr h dist.7z|grep 'CRC32  for data'|tail -c 9`].7z"
-
-.PHONY: all prepare build apt-install $(PACKAGES) clean $(PKG_CLEAN) distclean $(PKG_DISTCLEAN) pack
+.PHONY: all prepare build apt-install $(PACKAGES) clean $(PKG_CLEAN) distclean $(PKG_DISTCLEAN)

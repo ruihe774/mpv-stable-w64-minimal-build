@@ -1,6 +1,5 @@
 DLL_NAME = libfreetype-6.dll
 MESON_OPTIONS =\
---buildtype=release\
 -Dbrotli=disabled\
 -Dbzip2=disabled\
 -Dharfbuzz=disabled\

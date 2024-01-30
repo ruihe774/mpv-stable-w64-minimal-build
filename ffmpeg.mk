@@ -35,7 +35,7 @@ $(ARCHIVE):
 	mv $(addsuffix .tmp,$@) $@
 
 clean:
-	rm -r $(pc_path) $(header_path) $(implib_path)
+	-rm -r $(pc_path) $(header_path) $(implib_path)
 
 distclean: clean
-	rm -r $(UNARCHIVED) $(ARCHIVE)
+	-rm -r $(UNARCHIVED) $(ARCHIVE)

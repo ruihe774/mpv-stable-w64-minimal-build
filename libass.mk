@@ -13,7 +13,7 @@ $(PKG_SRC)/configure:
 	cd $(PKG_SRC) && ./autogen.sh
 
 clean:
-	+$(SUB_MAKE) clean
+	-+$(SUB_MAKE) clean
 
 distclean:
-	+$(SUB_MAKE) distclean
+	-+$(SUB_MAKE) distclean

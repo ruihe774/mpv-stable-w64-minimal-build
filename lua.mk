@@ -2,7 +2,7 @@ DLL_NAME = lua52.dll
 
 include Prelude.mk
 
-LUA_MAKE = $(SUB_MAKE) INSTALL_TOP=$(PREFIX) CC=$(HOST)-gcc-posix TO_BIN=lua52.dll TO_LIB=liblua.dll.a
+LUA_MAKE = $(SUB_MAKE) INSTALL_TOP=$(PREFIX) CC=$(HOST)-gcc-posix TO_BIN=lua52.dll TO_LIB=liblua.dll.a CFLAGS="-flto -O3"
 
 UNARCHIVED = $(DOWNLOADS)/lua-5.2.4
 ARCHIVE = $(DOWNLOADS)/lua-5.2.4.tar.gz
@@ -30,4 +30,4 @@ clean:
 	+$(LUA_MAKE) clean
 
 distclean:
-	rm -r $(UNARCHIVED) $(ARCHIVE) $(PKG_SRC)
+	-rm -r $(UNARCHIVED) $(ARCHIVE) $(PKG_SRC)

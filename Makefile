@@ -14,7 +14,7 @@ prepare:
 build: $(PACKAGES)
 
 apt-install:
-	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool p7zip wget ninja-build cmake nasm python-is-python3 python3-pip --no-install-recommends
+	apt install build-essential g++-mingw-w64-x86-64 mingw-w64-x86-64-dev win-iconv-mingw-w64-dev libz-mingw-w64-dev pkg-config autoconf automake libtool p7zip wget ninja-build cmake nasm python-is-python3 python3-pip zstd --no-install-recommends
 	pip3 install meson
 
 $(PACKAGES):
@@ -22,7 +22,7 @@ $(PACKAGES):
 
 libass: freetype harfbuzz fribidi
 mpv: libass ffmpeg lua shaderc spirv-cross libplacebo
-libplacebo: shaderc spirv-cross
+libplacebo: shaderc spirv-cross vulkan-loader
 
 PKG_CLEAN = $(addprefix clean-,$(PACKAGES))
 

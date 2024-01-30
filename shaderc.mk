@@ -16,7 +16,7 @@ $(PKG_BUILD): $(PKG_SRC)
 		-DSHADERC_SKIP_TESTS=ON\
 		-DSHADERC_SKIP_EXAMPLES=ON\
 		-DDISABLE_EXCEPTIONS=ON\
-		-DCMAKE_TOOLCHAIN_FILE=$(PKG_FILES)/toolchain.cmake
+		-DCMAKE_TOOLCHAIN_FILE=$(SRC)/toolchain.cmake
 
 $(PKG_SRC):
 	cd $(SRC)/shaderc.good && ./update_shaderc_sources.py

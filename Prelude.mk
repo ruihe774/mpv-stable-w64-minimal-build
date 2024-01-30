@@ -23,7 +23,7 @@ PKG_BUILD = $(CWD)/$(PKG_NAME).build
 SELF_MAKE = make -f $(SRC)/$(PKG_MK)
 SUB_MAKE = make -C $(PKG_SRC)
 SUB_NINJA = ninja -C $(PKG_BUILD)
-SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX)
+SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX) CFLAGS=-flto
 
 .DEFAULT_GOAL = all
 
@@ -89,7 +89,7 @@ $(PKG_BUILD):
   ifdef HAVE_PRECONFIG_HOOK
 	+$(SELF_MAKE) preconfig-hook
   endif
-	meson --prefix=$(PREFIX) -Dc_link_args=-L$(LIB) --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
+	meson --prefix=$(PREFIX) -Dc_link_args=-L$(LIB) -Db_lto=true --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
   ifdef HAVE_POSTCONFIG_HOOK
 	+$(SELF_MAKE) postconfig-hook
   endif

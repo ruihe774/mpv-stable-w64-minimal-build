@@ -1,7 +1,7 @@
 [binaries]
 c = 'x86_64-w64-mingw32-gcc-posix'
 cpp = 'x86_64-w64-mingw32-g++-posix'
-ar = 'x86_64-w64-mingw32-ar'
+ar = 'x86_64-w64-mingw32-gcc-ar'
 strip = 'x86_64-w64-mingw32-strip'
 windres = 'x86_64-w64-mingw32-windres'
 pkgconfig = 'pkg-config'

@@ -1,5 +1,6 @@
 MESON_OPTIONS =\
 --buildtype=release\
+-Dcplugins=disabled
 
 include Prelude.mk
 

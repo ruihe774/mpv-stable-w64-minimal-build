@@ -27,8 +27,8 @@ SUB_NINJA = ninja -C $(PKG_BUILD)
 MESON_CROSS = $(SRC)/meson_cross.txt
 CMAKE_TOOLCHAIN = $(SRC)/toolchain.cmake
 
-SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX) CFLAGS="-flto -O3"
-SUB_MESON = meson --prefix=$(PREFIX) --buildtype=release -Dc_link_args=-L$(LIB) -Dcpp_rtti=false -Db_lto=true --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
+SUB_CONFIGURE = cd $(PKG_SRC) && ./configure --host=$(HOST) --prefix=$(PREFIX) CFLAGS="-flto -O3" CXXFLAGS="-flto -O3"
+SUB_MESON = meson --prefix=$(PREFIX) --buildtype=release -Dc_args=-I$(INCLUDE) -Dc_link_args=-L$(LIB) -Dcpp_args=-I$(INCLUDE) -Dcpp_link_args=-L$(LIB) -Dcpp_rtti=false -Db_lto=true --cross-file=$(MESON_CROSS) $(MESON_OPTIONS) $(PKG_BUILD) $(PKG_SRC)
 SUB_CMAKE = cmake -H$(PKG_SRC) -B$(PKG_BUILD) -GNinja -DCMAKE_INSTALL_PREFIX=$(PREFIX) -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=$(CMAKE_TOOLCHAIN) $(CMAKE_OPTIONS)
 
 .DEFAULT_GOAL = all

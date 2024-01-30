@@ -19,3 +19,6 @@
 [submodule "spirv-cross"]
 	path = spirv-cross
 	url = https://github.com/KhronosGroup/SPIRV-Cross.git
+[submodule "libplacebo"]
+	path = libplacebo
+	url = https://github.com/haasn/libplacebo.git
